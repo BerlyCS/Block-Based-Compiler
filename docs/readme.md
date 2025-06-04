@@ -36,123 +36,125 @@
 <!-- DELIM -> ; -->
 <!-- OPERATOR -> -->
 
-PROGRAM         -> FUNCTION FUNCTION_LIST
+PROGRAM -> FUNCTION FUNCTION_LIST
 
-FUNCTION_LIST   -> FUNCTION FUNCTION_LIST
-                | FUNCTION_LAST
+FUNCTION_LIST -> FUNCTION FUNCTION_LIST
+FUNCTION_LIST -> FUNCTION_LAST
 
-FUNCTION_LAST   -> FUNCTION
+FUNCTION_LAST -> FUNCTION
 
-FUNCTION        -> FUNC ID LPAREN RPAREN BLOCK END
+FUNCTION -> func id lparen rparen BLOCK end
 
-BLOCK           -> LBRACE BODY RBRACE
+BLOCK -> lbrace BODY rbrace
 
-BODY            -> DECL_SECTION STMT_SECTION
+BODY -> DECL_SECTION STMT_SECTION
 
-DECL_SECTION    -> INPUT_DECL OUTPUT_DECL VAR_DECLS PIN_ASSIGNMENTS
+DECL_SECTION -> INPUT_DECL OUTPUT_DECL VAR_DECLS PIN_ASSIGNMENTS
 
-INPUT_DECL      -> INPUT COLON ID_LIST SEMICOLON
-                | NO_INPUT
+INPUT_DECL -> input colon ID_LIST semicolon
+INPUT_DECL -> NO_INPUT
 
-OUTPUT_DECL     -> OUTPUT COLON ID_LIST SEMICOLON
-                | OUTPUT LPAREN ID_LIST RPAREN SEMICOLON
-                | NO_OUTPUT
+OUTPUT_DECL -> output colon ID_LIST semicolon
+OUTPUT_DECL -> output lparen ID_LIST rparen semicolon
+OUTPUT_DECL -> NO_OUTPUT
 
-NO_INPUT        -> NO_INPUT_TOKEN
-NO_OUTPUT       -> NO_OUTPUT_TOKEN
+NO_INPUT -> no_input_token
 
-VAR_DECLS       -> VAR_DECL VAR_DECLS
-                | NO_VAR_DECLS
+NO_OUTPUT -> no_output_token
 
-VAR_DECL        -> TYPE ID SEMICOLON
-                | TYPE ID ASSIGN EXPR SEMICOLON
+VAR_DECLS -> VAR_DECL VAR_DECLS
+VAR_DECLS -> NO_VAR_DECLS
 
-NO_VAR_DECLS    -> NO_VARS_TOKEN
+VAR_DECL -> type id semicolon
+VAR_DECL -> type id assign EXPR semicolon
+
+NO_VAR_DECLS -> no_vars_token
 
 PIN_ASSIGNMENTS -> PIN_ASSIGN PIN_ASSIGNMENTS
-                | NO_ASSIGNMENTS
+PIN_ASSIGNMENTS -> NO_ASSIGNMENTS
 
-PIN_ASSIGN      -> ASSIGN_PIN ID NUM SEMICOLON
+PIN_ASSIGN -> assign_pin id num semicolon
 
-NO_ASSIGNMENTS  -> NO_ASSIGN_TOKEN
+NO_ASSIGNMENTS -> no_assign_token
 
-ID_LIST         -> ID ID_LIST_TAIL
+ID_LIST -> id ID_LIST_TAIL
 
-ID_LIST_TAIL    -> COMMA ID ID_LIST_TAIL
-                | ID_LAST
+ID_LIST_TAIL -> comma id ID_LIST_TAIL
+ID_LIST_TAIL -> ID_LAST
 
-ID_LAST         -> ID
+ID_LAST -> id
 
-STMT_SECTION    -> STMT STMT_SECTION
-                | STMT_LAST
+STMT_SECTION -> STMT STMT_SECTION
+STMT_SECTION -> STMT_LAST
 
-STMT_LAST       -> STMT
+STMT_LAST -> STMT
 
-STMT            -> LED_CONTROL
-                | WAIT_STMT
-                | IF_STMT
-                | WHILE_STMT
-                | FOR_STMT
-                | ASSIGNMENT
-                | FUNC_CALL
+STMT -> LED_CONTROL
+STMT -> WAIT_STMT
+STMT -> IF_STMT
+STMT -> WHILE_STMT
+STMT -> FOR_STMT
+STMT -> ASSIGNMENT
+STMT -> FUNC_CALL
 
-LED_CONTROL     -> TURN_ON ID SEMICOLON
-                | TURN_OFF ID SEMICOLON
-                | TURN_ON LPAREN ID RPAREN SEMICOLON
-                | TURN_OFF LPAREN ID RPAREN SEMICOLON
+LED_CONTROL -> turn_on id semicolon
+LED_CONTROL -> turn_off id semicolon
+LED_CONTROL -> turn_on lparen id rparen semicolon
+LED_CONTROL -> turn_off lparen id rparen semicolon
 
-WAIT_STMT       -> WAIT NUM SEMICOLON
+WAIT_STMT -> wait num semicolon
 
-ASSIGNMENT      -> ID ASSIGN EXPR SEMICOLON
+ASSIGNMENT -> id assign EXPR semicolon
 
-FUNC_CALL       -> ID LPAREN EXPR_LIST RPAREN SEMICOLON
+FUNC_CALL -> id lparen EXPR_LIST rparen semicolon
 
-EXPR_LIST       -> EXPR EXPR_LIST_TAIL
-                | NO_EXPR_LIST
+EXPR_LIST -> EXPR EXPR_LIST_TAIL
+EXPR_LIST -> NO_EXPR_LIST
 
-EXPR_LIST_TAIL  -> COMMA EXPR EXPR_LIST_TAIL
-                | EXPR_LAST
+EXPR_LIST_TAIL -> comma EXPR EXPR_LIST_TAIL
+EXPR_LIST_TAIL -> EXPR_LAST
 
-EXPR_LAST       -> EXPR
-NO_EXPR_LIST    -> NO_EXPR_LIST_TOKEN
+EXPR_LAST -> EXPR
 
-EXPR            -> TERM EXPR_OP
+NO_EXPR_LIST -> no_expr_list_token
 
-EXPR_OP         -> PLUS TERM EXPR_OP
-                | MINUS TERM EXPR_OP
-                | NO_EXPR_OP
+EXPR -> TERM EXPR_OP
 
-TERM            -> FACTOR TERM_OP
+EXPR_OP -> plus TERM EXPR_OP
+EXPR_OP -> minus TERM EXPR_OP
+EXPR_OP -> no_expr_op
 
-TERM_OP         -> MULT FACTOR TERM_OP
-                | DIV FACTOR TERM_OP
-                | NO_TERM_OP
+TERM -> FACTOR TERM_OP
 
-FACTOR          -> NUM
-                | ID
-                | LPAREN EXPR RPAREN
+TERM_OP -> mult FACTOR TERM_OP
+TERM_OP -> div FACTOR TERM_OP
+TERM_OP -> no_term_op
 
-IF_STMT         -> IF LPAREN COND RPAREN BLOCK IF_REST
+FACTOR -> num
+FACTOR -> id
+FACTOR -> lparen EXPR rparen
 
-IF_REST         -> ELSE_IF LPAREN COND RPAREN BLOCK IF_REST
-                | ELSE BLOCK
-                | DONE
+IF_STMT -> if lparen COND rparen BLOCK IF_REST
 
-COND            -> EXPR COMP_OP EXPR
-                | ID
+IF_REST -> else_if lparen COND rparen BLOCK IF_REST
+IF_REST -> else BLOCK
+IF_REST -> done
 
-COMP_OP         -> EQ
-                | NEQ
-                | LT
-                | GT
-                | LTE
-                | GTE
+COND -> EXPR COMP_OP EXPR
+COND -> id
 
-WHILE_STMT      -> WHILE LPAREN COND RPAREN BLOCK DONE
+COMP_OP -> eq
+COMP_OP -> neq
+COMP_OP -> lt
+COMP_OP -> gt
+COMP_OP -> lte
+COMP_OP -> gte
 
-FOR_STMT        -> FOR LPAREN SIMPLE_ASSIGN COND SEMICOLON INCREMENT RPAREN BLOCK DONE
+WHILE_STMT -> while lparen COND rparen BLOCK done
 
-SIMPLE_ASSIGN   -> ID ASSIGN EXPR
+FOR_STMT -> for lparen SIMPLE_ASSIGN COND semicolon INCREMENT rparen BLOCK done
 
-INCREMENT       -> ID ASSIGN ID PLUS NUM
-                | ID INCR
+SIMPLE_ASSIGN -> id assign EXPR
+
+INCREMENT -> id assign id plus num
+INCREMENT -> id incr
