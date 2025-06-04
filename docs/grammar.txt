@@ -1,0 +1,72 @@
+<Programa> ::= <ListaFunciones>
+
+<ListaFunciones> ::= <Funcion> <ListaFunciones> | ε
+
+<Funcion> ::= FUNCION <Identificador> <Bloque> FIN
+
+<Bloque> ::= '{' <Cuerpo> '}'
+
+<Cuerpo> ::= <DeclaracionesOpcionales> <SentenciasOpcionales>
+
+<DeclaracionesOpcionales> ::= <DeclaracionEntrada> <DeclaracionSalida> <DeclaracionVariables> <AsignarPins>
+
+<DeclaracionEntrada> ::= ENTRADA ':' <ListaID> ';' | ε
+<DeclaracionSalida>   ::= SALIDA  ':' <ListaID> ';' | ε
+
+<DeclaracionVariables> ::= <DeclVar> <DeclaracionVariables> | ε
+<DeclVar> ::= <Tipo> <Identificador> ';'
+<Tipo> ::= ENTERO | DECIMAL | CADENA | BYTE
+
+<AsignarPins> ::= ASIGNAR_PIN <Identificador> <Numero> ';' <AsignarPins> | ε
+
+<ListaID> ::= <Identificador> ',' <ListaID> | <Identificador>
+<Numero> ::= [0-9]+      // literal numérico entero
+
+<SentenciasOpcionales> ::= <Sentencia> <SentenciasOpcionales> | ε
+
+<Sentencia> ::= <SentenciaPrenderApagar>
+              | <SentenciaEsperar>
+              | <SentenciaIf>
+              | <SentenciaMientras>
+              | <SentenciaPara>
+              | <SentenciaAsignacion>
+              | <SentenciaLlamadaFuncion>
+
+<SentenciaPrenderApagar> ::= PRENDER <Identificador> ';'
+                           | APAGAR <Identificador> ';'
+
+<SentenciaEsperar> ::= ESPERAR <Numero> ';'
+
+<SentenciaAsignacion> ::= <Identificador> '=' <Expresion> ';'
+
+<SentenciaLlamadaFuncion> ::= <Identificador> '(' <ListaExpresiones> ')' ';'
+
+<ListaExpresiones> ::= <Expresion> ',' <ListaExpresiones> | <Expresion> | ε
+
+<Expresion> ::= <Termino> { ('+' | '-') <Termino> }
+<Termino>   ::= <Factor> { ('*' | '/') <Factor> }
+<Factor>    ::= <Numero>
+              | <Identificador>
+              | '(' <Expresion> ')'
+
+<SentenciaIf> ::= SI '(' <Condicion> ')' <Bloque> <RestoIf>
+
+<RestoIf> ::= SINO_SI '(' <Condicion> ')' <Bloque> <RestoIf>
+            | SINO <Bloque>
+            | HECHO
+
+<Condicion> ::= <Expresion> ( '==' | '!=' | '<' | '>' | '<=' | '>=' ) <Expresion>
+              | <Identificador> 
+
+<SentenciaMientras> ::= MIENTRAS '(' <Condicion> ')' <Bloque> HECHO
+
+<SentenciaPara> ::= POR '(' <SentenciaAsignacionSinPC> <Condicion> ';' <SentenciaIncremento> ')' <Bloque> HECHO
+                  // O la variante simplificada que definas
+
+<SentenciaAsignacionSinPC> ::= <Identificador> '=' <Expresion>
+<SentenciaIncremento>      ::= <Identificador> '=' <Identificador> '+' <Numero>
+                            | <Identificador> '++'
+
+<Identificador> ::= [A-Za-z_][A-Za-z0-9_]*
+
+FIN DE LA GRAMÁTICA
