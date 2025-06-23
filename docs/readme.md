@@ -11,20 +11,18 @@
 
 ##### Lenguaje
 
-- Tokens
+- Tokens:
     * ESPERAR
-    * ENTRADA : INPUTS
-    * SALIDA : OUTPUTS
-    * ASIGNAR_PIN
+    * ENTRADA
+    * SALIDA
+    * DEFINIR_PIN
     * APAGAR
     * PRENDER
     * SI, MIENTRAS, POR, ENTERO, DECIMAL, CADENA, BYTE
     * SINO SI, SINO, HECHO
-    * LED_INTERNO, BOTONES, MOTORES
-    * '+', '-', '/' ...
-    * '{', '}'
+    * '+', '-', '/', '*', '==', '!=', '<', '>'
     * '(', ')'
-    * '1', '2', ...
+    * '1', '2', ..., números literales
     * FUNCION, FIN
     * VERDADERO, FALSO
 
