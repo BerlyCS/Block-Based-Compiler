@@ -1,49 +1,49 @@
-FUNCION CONFIGURACION()
-  DEFINIR_PIN(LED_ROJO, 2);
-  DEFINIR_PIN(BOTON, 4);
-  DEFINIR_PIN(MOTOR, 6);
-  DEFINIR_PIN(LED_INTERNO, 13);
+funcion configuracion()
+  definir_pin(led_rojo, 2);
+  definir_pin(boton, 4);
+  definir_pin(motor, 6);
+  definir_pin(led_interno, 13);
 
-  SALIDA(LED_ROJO);
-  SALIDA(MOTOR);
-  SALIDA(LED_INTERNO);
-  ENTRADA(BOTON);
+  salida(led_rojo);
+  salida(motor);
+  salida(led_interno);
+  entrada(boton);
 
-  ENTERO valor1 = 10;
-  ENTERO valor2 = 20;
-  ENTERO valor3 = 30;
-  DECIMAL temperatura = 23.5;
-  CADENA mensaje = "Sistema listo";
-  BOOLEANO activo = VERDADERO;
-FIN
+  entero valor1 = 10;
+  entero valor2 = 20;
+  entero valor3 = 30;
+  decimal temperatura = 23.5;
+  cadena mensaje = "Sistema listo";
+  booleano activo = verdadero;
+fin
 
-FUNCION PRINCIPAL()
-  MIENTRAS (LEER(BOTON) == FALSO)
-    ESPERAR(100);
-  FIN_MIENTRAS
+funcion principal()
+  mientras (leer(boton) == falso)
+    esperar(100);
+  fin_mientras
 
-  SI (activo == VERDADERO)
-    PRENDER(LED_INTERNO);
-    PRENDER(LED_ROJO);
-    PRENDER(MOTOR);
-    ESPERAR(500);
-    APAGAR(MOTOR);
-    APAGAR(LED_ROJO);
-    APAGAR(LED_INTERNO);
-  HECHO
-  SINO SI (temperatura > 30.0)
-    PRENDER(MOTOR);
-  HECHO
-  SINO
-    APAGAR(MOTOR);
-  HECHO
+  si (activo == verdadero)
+    prender(led_interno);
+    prender(led_rojo);
+    prender(motor);
+    esperar(500);
+    apagar(motor);
+    apagar(led_rojo);
+    apagar(led_interno);
+  hecho
+  sino si (temperatura > 30.0)
+    prender(motor);
+  hecho
+  sino
+    apagar(motor);
+  hecho
 
-  ENTERO resultado = valor1 + valor2 - valor3 / 2;
+  entero resultado = valor1 + valor2 - valor3 / 2;
 
-  POR (contador = 0; contador < 3; contador = contador + 1)
-    PRENDER(LED_INTERNO);
-    ESPERAR(100);
-    APAGAR(LED_INTERNO);
-    ESPERAR(100);
-  FIN_POR
-FIN
+  por (contador = 0; contador < 3; contador = contador + 1)
+    prender(led_interno);
+    esperar(100);
+    apagar(led_interno);
+    esperar(100);
+  fin_por
+fin
