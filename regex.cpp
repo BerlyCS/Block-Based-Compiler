@@ -4,6 +4,9 @@
 #include <regex>
 #include <vector>
 #include <sstream>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 std::string translateLine(const std::string& line) {
     std::smatch match;
@@ -95,7 +98,9 @@ int main(int argc, char* argv[]) {
     }
 
     std::ifstream input(argv[1]);
-    std::ofstream output(argv[2]);
+    std::string nameOutput = argv[2];
+    fs::create_directory(nameOutput);
+    std::ofstream output(nameOutput+"/"+nameOutput+".ino");
 
     if (!input) {
         std::cerr << "Error: no se pudo abrir el archivo de entrada.\n";
