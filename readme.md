@@ -28,18 +28,55 @@
 ##### Gramatica
 
 PROGRAMA -> FUNCION PROGRAMA
-PROGRAMA -> BLOQUE PROGRAMA
-PROGRAMA -> æ
+         | BLOQUE PROGRAMA
+         | ε
 
-FUNCION -> funcion ID_FUNCION () BLOQUE fin
+FUNCION -> "funcion" ID_FUNCION "(" ")" BLOQUE "fin"
 
-BLOQUE -> æ
-BLOQUE -> BLOQUE BLOQUE
-BLOQUE -> INSTRUCCION;
+ID_FUNCION -> "cualquier_id"
 
-INSTRUCCION -> DEFINIR_PIN(ID, NUM)
-INSTRUCCION -> SALIDA(ID)
-INSTRUCCION -> ENTRADA(ID)
-INSTRUCCION -> LEER(ID)
+BLOQUE -> ε
+       | BLOQUE BLOQUE
+       | INSTRUCCION ";"
+       | CONTROL
 
+INSTRUCCION -> "definir_pin" "(" ID "," NUM ")"
+             | "salida" "(" ID ")"
+             | "entrada" "(" ID ")"
+             | "prender" "(" ID ")"
+             | "apagar" "(" ID ")"
+             | "esperar" "(" NUM ")"
+             | DECLARACION
+             | ASIGNACION
 
+DECLARACION -> TIPO ID "=" EXPRESION
+
+TIPO -> "entero"
+     | "decimal"
+     | "cadena"
+     | "booleano"
+
+ASIGNACION -> ID "=" EXPRESION
+
+EXPRESION -> EXPRESION OP EXPRESION
+           | "leer" "(" ID ")"
+           | NUM
+           | ID
+           | BOOL
+           | STR
+
+OP -> "+" | "-" | "*" | "/" | "==" | ">" | "<"
+
+CONTROL -> MIENTRAS
+         | SI
+         | POR
+
+MIENTRAS -> "mientras" "(" EXPRESION ")" BLOQUE "fin_mientras"
+
+SI -> "si" "(" EXPRESION ")" BLOQUE SINO_LISTA
+
+SINO_LISTA -> "sino si" "(" EXPRESION ")" BLOQUE SINO_LISTA
+            | "sino" BLOQUE
+            | ε
+
+POR -> "por" "(" ID "=" EXPRESION ";" EXPRESION ";" ASIGNACION ")" BLOQUE "fin_por"
