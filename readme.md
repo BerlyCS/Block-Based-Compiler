@@ -27,11 +27,22 @@
 
 ##### Gramatica
 
-PROGRAMA -> FUNCION PROGRAMA
-         | BLOQUE PROGRAMA
-         | ε
+PROGRAMA → LISTA_BLOQUES
 
-FUNCION -> "funcion" ID_FUNCION "(" ")" BLOQUE "fin"
+LISTA_BLOQUES → FUNCION LISTA_BLOQUES
+              | BLOQUE LISTA_BLOQUES
+              | ε
+
+FUNCION → "funcion" ID_FUNCION "(" ")" BLOQUE "fin"
+
+BLOQUE → INSTRUCCION ";"
+       | CONTROL
+       | ε
+       | BLOQUE_RESTO
+
+BLOQUE_RESTO → INSTRUCCION ";" BLOQUE_RESTO
+             | CONTROL BLOQUE_RESTO
+             | ε
 
 ID_FUNCION -> "cualquier_id"
 
@@ -40,43 +51,42 @@ BLOQUE -> ε
        | INSTRUCCION ";"
        | CONTROL
 
-INSTRUCCION -> "definir_pin" "(" ID "," NUM ")"
-             | "salida" "(" ID ")"
-             | "entrada" "(" ID ")"
-             | "prender" "(" ID ")"
-             | "apagar" "(" ID ")"
-             | "esperar" "(" NUM ")"
-             | DECLARACION
-             | ASIGNACION
+INSTRUCCION → "definir_pin" "(" ID "," NUM ")"
+            | "salida" "(" ID ")"
+            | "entrada" "(" ID ")"
+            | "prender" "(" ID ")"
+            | "apagar" "(" ID ")"
+            | "esperar" "(" NUM ")"
+            | DECLARACION
+            | ASIGNACION
 
-DECLARACION -> TIPO ID "=" EXPRESION
+DECLARACION → TIPO ID "=" EXPRESION
 
-TIPO -> "entero"
-     | "decimal"
-     | "cadena"
-     | "booleano"
+TIPO → "entero" | "decimal" | "cadena" | "bool"
 
-ASIGNACION -> ID "=" EXPRESION
+ASIGNACION → ID "=" EXPRESION
 
-EXPRESION -> EXPRESION OP EXPRESION
-           | "leer" "(" ID ")"
-           | NUM
-           | ID
-           | BOOL
-           | STR
+EXPRESION → FACTOR EXPRESION'
 
-OP -> "+" | "-" | "*" | "/" | "==" | ">" | "<"
+EXPRESION' → OP FACTOR EXPRESION'
+           | ε
 
-CONTROL -> MIENTRAS
-         | SI
-         | POR
+FACTOR → "leer" "(" ID ")"
+       | NUM
+       | ID
+       | BOOL
+       | STR
 
-MIENTRAS -> "mientras" "(" EXPRESION ")" BLOQUE "fin_mientras"
+OP → "+" | "-" | "*" | "/" | "==" | ">" | "<"
 
-SI -> "si" "(" EXPRESION ")" BLOQUE SINO_LISTA
+CONTROL → MIENTRAS | SI | POR
 
-SINO_LISTA -> "sino si" "(" EXPRESION ")" BLOQUE SINO_LISTA
-            | "sino" BLOQUE
-            | ε
+MIENTRAS → "mientras" "(" EXPRESION ")" BLOQUE "fin_mientras"
 
-POR -> "por" "(" ID "=" EXPRESION ";" EXPRESION ";" ASIGNACION ")" BLOQUE "fin_por"
+SI → "si" "(" EXPRESION ")" BLOQUE SINO_LISTA
+
+SINO_LISTA → "sino si" "(" EXPRESION ")" BLOQUE SINO_LISTA
+           | "sino" BLOQUE
+           | ε
+
+POR → "por" "(" ID "=" EXPRESION ";" EXPRESION ";" ASIGNACION ")" BLOQUE "fin_por"
