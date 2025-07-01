@@ -19,14 +19,22 @@ int main(int argc, char* argv[]) {
     std::string source = buffer.str();
 
     Lexer lexer(source);
+    std::cout<<"Lexico\n";
     auto tokens = lexer.scanTokens();
+for (const auto &token : tokens) {
+  std::cout << "[Linea " << token.line << "] "
+            << tokenTypeToString(token.type)
+            << "-->" << token.lexeme << '\n';
+}
     if (!lexer.getErrors().empty()) {
+        std::cout<<"se encontraron errores\n";
         for (const auto& err : lexer.getErrors()) {
             std::cerr << err << '\n';
         }
         return 1;
     }
     ///*
+    std::cout<<"parseando...\n";
     Parser parser(tokens);
     try {
         parser.parseProgram();

@@ -28,10 +28,6 @@ std::string tokenTypeToString(TokenType type)
         return "NUMBER";
     case TokenType::FUNCION:
         return "FUNCION";
-    case TokenType::CONFIGURACION:
-        return "CONFIGURACION";
-    case TokenType::PRINCIPAL:
-        return "PRINCIPAL";
     case TokenType::FIN:
         return "FIN";
     case TokenType::FIN_MIENTRAS:
@@ -246,8 +242,6 @@ TokenType identifierType(const std::string &text)
 {
     static std::unordered_map<std::string, TokenType> keywords = {
         {"funcion", TokenType::FUNCION},
-        {"configuracion", TokenType::CONFIGURACION},
-        {"principal", TokenType::PRINCIPAL},
         {"fin", TokenType::FIN},
         {"fin_mientras", TokenType::FIN_MIENTRAS},
         {"fin_por", TokenType::FIN_POR},
