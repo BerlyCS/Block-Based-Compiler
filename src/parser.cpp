@@ -11,7 +11,7 @@ Parser::Parser(const std::vector<Token>& tokens) : tokens(tokens), current(0) {}
 void Parser::parseProgram() {
     std::cout << "[Parser] Entrando a parseProgram()" << std::endl;
     parseListaBloques();
-    consume(TokenType::END_OF_FILE, "se esperaba fin de archivo");
+    //consume(TokenType::END_OF_FILE, "se esperaba fin de archivo");
     std::cout << "\n[Parser] Analisis sintactico completado exitosamente.\n";
 }
 
@@ -58,11 +58,19 @@ void Parser::parseListaBloques() {
 void Parser::parseFuncion() {
     std::cout << "[Parser] Entrando a parseFuncion()" << std::endl;
     consume(TokenType::FUNCION, "se esperaba 'funcion'");
-    consume(TokenType::IDENTIFIER, "se esperaba nombre de funcion");
+    Token& name = consume(TokenType::IDENTIFIER, "se esperaba nombre de funcion");
     consume(TokenType::LEFT_PAREN, "se esperaba '('");
     consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+    if (name.lexeme == "configuracion") {
+        std::cout << "void setup() {\n";
+    } else if (name.lexeme == "principal") {
+        std::cout << "void loop() {\n";
+    } else {
+        std::cout << "void " << name.lexeme << "() {\n";
+    }
     parseBloque();
     consume(TokenType::FIN, "se esperaba 'fin' al cerrar funcion");
+    std::cout << "}\n";
 }
 
 void Parser::parseBloque() {
@@ -81,19 +89,36 @@ void Parser::parseInstruccion() {
     std::cout << "[Parser] Entrando a parseInstruccion()" << std::endl;
     if (match(TokenType::DEFINIR_PIN)) {
         consume(TokenType::LEFT_PAREN, "se esperaba '(' tras definir_pin");
-        consume(TokenType::IDENTIFIER, "se esperaba identificador");
+        Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
         consume(TokenType::COMMA, "se esperaba ','");
-        consume(TokenType::NUMBER, "se esperaba numero");
+        Token& num = consume(TokenType::NUMBER, "se esperaba numero");
         consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
-    } else if (match(TokenType::SALIDA_KW) || match(TokenType::ENTRADA_KW) ||
-               match(TokenType::PRENDER) || match(TokenType::APAGAR)) {
-        consume(TokenType::LEFT_PAREN, "se esperaba '('");
-        consume(TokenType::IDENTIFIER, "se esperaba identificador");
+        std::cout << "  const int " << id.lexeme << " = " << num.lexeme << ";\n";
+    } else if (match(TokenType::SALIDA_KW)) {
+        consume(TokenType::LEFT_PAREN, "se esperaba '('" );
+        Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
         consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << "  pinMode(" << id.lexeme << ", OUTPUT);\n";
+    } else if (match(TokenType::ENTRADA_KW)) {
+        consume(TokenType::LEFT_PAREN, "se esperaba '('" );
+        Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
+        consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << "  pinMode(" << id.lexeme << ", INPUT);\n";
+    } else if (match(TokenType::PRENDER)) {
+        consume(TokenType::LEFT_PAREN, "se esperaba '('" );
+        Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
+        consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << "  digitalWrite(" << id.lexeme << ", HIGH);\n";
+    } else if (match(TokenType::APAGAR)) {
+        consume(TokenType::LEFT_PAREN, "se esperaba '('" );
+        Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
+        consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << "  digitalWrite(" << id.lexeme << ", LOW);\n";
     } else if (match(TokenType::ESPERAR)) {
-        consume(TokenType::LEFT_PAREN, "se esperaba '('");
-        consume(TokenType::NUMBER, "se esperaba número");
+        consume(TokenType::LEFT_PAREN, "se esperaba '('" );
+        Token& num = consume(TokenType::NUMBER, "se esperaba número");
         consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << "  delay(" << num.lexeme << ");\n";
     } else if (checkTipoDeclaracion()) {
         parseDeclaracion();
     } else if (check(TokenType::IDENTIFIER)) {
@@ -105,23 +130,35 @@ void Parser::parseInstruccion() {
 
 void Parser::parseDeclaracion() {
     std::cout << "[Parser] Entrando a parseDeclaracion()" << std::endl;
-    advance(); // tipo
-    consume(TokenType::IDENTIFIER, "se esperaba identificador");
+    Token& tipo = previous(); // tipo token (ya avanzado)
+    Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
     consume(TokenType::ASSIGN, "se esperaba '='");
+    // Imprimir tipo de variable
+    std::string ctype;
+    if (tipo.type == TokenType::ENTERO) ctype = "int";
+    else if (tipo.type == TokenType::DECIMAL) ctype = "float";
+    else if (tipo.type == TokenType::CADENA) ctype = "String";
+    else if (tipo.type == TokenType::BOOLEANO) ctype = "bool";
+    else ctype = "auto";
+    std::cout << "  " << ctype << " " << id.lexeme << " = ";
     parseExpresion();
+    std::cout << ";\n";
 }
 
 void Parser::parseAsignacion() {
     std::cout << "[Parser] Entrando a parseAsignacion()" << std::endl;
-    consume(TokenType::IDENTIFIER, "se esperaba identificador");
+    Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
     consume(TokenType::ASSIGN, "se esperaba '='");
+    std::cout << "  " << id.lexeme << " = ";
     parseExpresion();
+    std::cout << ";\n";
 }
 
 void Parser::parseExpresion() {
     std::cout << "[Parser] Entrando a parseExpresion()" << std::endl;
     parseFactor();
     while (check(TokenType::OPERATOR)) {
+        std::cout << peek().lexeme;
         advance();
         parseFactor();
     }
@@ -131,12 +168,14 @@ void Parser::parseFactor() {
     std::cout << "[Parser] Entrando a parseFactor()" << std::endl;
     if (match(TokenType::NUMBER) || match(TokenType::IDENTIFIER) || match(TokenType::STRING_LITERAL) ||
         match(TokenType::VERDADERO) || match(TokenType::FALSO)) {
+        std::cout << previous().lexeme;
         return;
     }
     if (match(TokenType::LEER)) {
         consume(TokenType::LEFT_PAREN, "se esperaba '('");
-        consume(TokenType::IDENTIFIER, "se esperaba identificador");
+        Token& id = consume(TokenType::IDENTIFIER, "se esperaba identificador");
         consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << "digitalRead(" << id.lexeme << ")";
         return;
     }
     throw std::runtime_error("[Linea " + std::to_string(peek().line) + "] Factor no reconocido en expresion");
@@ -152,30 +191,39 @@ void Parser::parseControl() {
 void Parser::parseMientras() {
     std::cout << "[Parser] Entrando a parseMientras()" << std::endl;
     consume(TokenType::LEFT_PAREN, "se esperaba '(' tras mientras");
+    std::cout << "  while (";
     parseExpresion();
     consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+    std::cout << ") {\n";
     parseBloque();
     consume(TokenType::FIN_MIENTRAS, "se esperaba 'fin_mientras'");
+    std::cout << "  }\n";
 }
 
 void Parser::parseSi() {
     std::cout << "[Parser] Entrando a parseSi()" << std::endl;
     consume(TokenType::LEFT_PAREN, "se esperaba '(' tras si");
+    std::cout << "  if (";
     parseExpresion();
     consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+    std::cout << ") {\n";
     parseBloque();
     parseSinoLista();
+    std::cout << "  }\n";
 }
 
 void Parser::parseSinoLista() {
     std::cout << "[Parser] Entrando a parseSinoLista()" << std::endl;
     while (match(TokenType::SINO_SI)) {
         consume(TokenType::LEFT_PAREN, "se esperaba '(' tras sino si");
+        std::cout << "  else if (";
         parseExpresion();
         consume(TokenType::RIGHT_PAREN, "se esperaba ')'");
+        std::cout << ") {\n";
         parseBloque();
     }
     if (match(TokenType::SINO)) {
+        std::cout << "  else {\n";
         parseBloque();
     }
 }
