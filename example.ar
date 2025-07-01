@@ -30,10 +30,8 @@ funcion principal()
     apagar(motor);
     apagar(led_rojo);
     apagar(led_interno);
-  hecho
   sino si (temperatura > 30.0)
     prender(motor);
-  hecho
   sino
     apagar(motor);
   hecho

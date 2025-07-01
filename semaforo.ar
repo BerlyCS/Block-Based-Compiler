@@ -1,32 +1,31 @@
-DEFINIR_PIN(LED_ROJO, 2);
-DEFINIR_PIN(LED_AMARILLO, 3);
-DEFINIR_PIN(LED_VERDE, 4);
+definir_pin(led_rojo, 2);
+definir_pin(led_amarillo, 3);
+definir_pin(led_verde, 4);
 
-FUNCION CONFIGURACION()
-  SALIDA(LED_ROJO);
-  SALIDA(LED_AMARILLO);
-  SALIDA(LED_VERDE);
-FIN
+funcion configuracion()
+  salida(led_rojo);
+  salida(led_amarillo);
+  salida(led_verde);
+fin
 
-FUNCION PRINCIPAL()
-  MIENTRAS (VERDADERO)
+funcion principal()
+  mientras (verdadero)
     # rojo
-    PRENDER(LED_ROJO);
-    APAGAR(LED_AMARILLO);
-    APAGAR(LED_VERDE);
-    ESPERAR(3000);
+    prender(led_rojo);
+    apagar(led_amarillo);
+    apagar(led_verde);
+    esperar(3000);
 
     # amarillo
-    APAGAR(LED_ROJO);
-    PRENDER(LED_AMARILLO);
-    APAGAR(LED_VERDE);
-    ESPERAR(1000);
+    apagar(led_rojo);
+    prender(led_amarillo);
+    apagar(led_verde);
+    esperar(1000);
 
     # verde
-    APAGAR(LED_ROJO);
-    APAGAR(LED_AMARILLO);
-    PRENDER(LED_VERDE);
-    ESPERAR(3000);
-
-  FIN_MIENTRAS
-FIN
+    apagar(led_rojo);
+    apagar(led_amarillo);
+    prender(led_verde);
+    esperar(3000);
+  fin_mientras
+fin
