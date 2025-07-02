@@ -41,7 +41,7 @@ class Parser {
 
   parseStatement() {
     const tk = this.peek();
-    if (['PRENDER', 'APAGAR'].includes(tk.type)) return this.parseLedControl();
+    if (['PRENDER', 'APAGAR', 'SALIDA'].includes(tk.type)) return this.parseLedControl();
     if (tk.type === 'ESPERAR') return this.parseWait();
     if (['ENTERO', 'DECIMAL', 'BYTE', 'CADENA'].includes(tk.type)) return this.parseDeclaration();
     if (tk.type === 'ID') {
@@ -51,7 +51,7 @@ class Parser {
   }
 
   parseLedControl() {
-    const action = this.consume(['PRENDER', 'APAGAR']).type;
+    const action = this.consume(['PRENDER', 'APAGAR', 'SALIDA']).type;
     this.consume('(');
     const pin = this.consume('ID').value;
     this.consume(')');
