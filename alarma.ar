@@ -1,0 +1,28 @@
+# Simulador del Proyecto:
+# https://wokwi.com/projects/436055966520206337
+
+definir_pin(pirPin, 2);
+definir_pin(ledPin, 3);
+definir_pin(buzzerPin, 4);
+
+funcion configuracion()
+  entrada(pirPin);
+  salida(ledPin);
+  bocina(buzzerPin);
+fin
+
+funcion principal()
+  num movimiento = leer(pirPin);
+  si (movimiento == 1)
+    prender(ledPin);
+    prender(buzzerPin, 1000);
+    esperar(200);
+    apagar(ledPin);
+    apagar(buzzerPin);
+    esperar(200);
+  hecho 
+  sino
+    apagar(ledPin);
+    apagar(buzzerPin);
+  hecho
+fin

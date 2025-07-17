@@ -1,0 +1,12 @@
+definir_pin(LED, 13);
+
+funcion configuracion()
+  salida(LED);
+fin
+
+funcion principal()
+  prender(LED);
+  esperar(1000);
+  apagar(LED);
+  esperar(1000);
+fin

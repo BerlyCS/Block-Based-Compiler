@@ -9,23 +9,21 @@ funcion configuracion()
 fin
 
 funcion principal()
-  mientras (verdadero)
-    # rojo
-    prender(led_rojo);
-    apagar(led_amarillo);
-    apagar(led_verde);
-    esperar(3000);
+  # rojo
+  prender(led_rojo);
+  apagar(led_amarillo);
+  apagar(led_verde);
+  esperar(3000);
 
-    # amarillo
-    apagar(led_rojo);
-    prender(led_amarillo);
-    apagar(led_verde);
-    esperar(1000);
+  # amarillo
+  apagar(led_rojo);
+  prender(led_amarillo);
+  apagar(led_verde);
+  esperar(1000);
 
-    # verde
-    apagar(led_rojo);
-    apagar(led_amarillo);
-    prender(led_verde);
-    esperar(3000);
-  fin_mientras
+  # verde
+  apagar(led_rojo);
+  apagar(led_amarillo);
+  prender(led_verde);
+  esperar(3000);
 fin
