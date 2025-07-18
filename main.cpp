@@ -28,13 +28,10 @@ int main(int argn, char *argv[]){
   Lexer l;  
   try {
     vector<Token> v = l.analizar(file);
-    for(Token t:v){
-      cout<<"["<<l.tokenTypeToString(t.tipo)<<"]\t"<<"->\t"<<t.valor<<endl;
-    }
     Parser p(v);
     SemanticAnalyzer s;
     Generador g(v, quitarExtensionAR(argv[1]));
-
+    
     p.analizar();
     s.verificar(v);
     g.traducir();

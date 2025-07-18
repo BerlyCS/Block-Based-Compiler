@@ -216,7 +216,6 @@ void Generador::traduceIf(){
   file << "}\n";
 
   it++;
-  std::cout<<it->valor<<std::endl;
   if(it->tipo == TokenType::SINO){
     escribirSangria();
     file << "else {\n";
