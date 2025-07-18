@@ -73,7 +73,9 @@ void Parser::parseDefinePin(){
     expect(TokenType::PARENTESIS_IZQ);
     expect(TokenType::IDENT);
     expect(TokenType::COMA);
-    expect(TokenType::NUM_ENTERO);
+    if(!match(TokenType::NUM_ENTERO) && !match(TokenType::IDENT)){
+      throw std::runtime_error("Error de sintaxis: Definicion del pin incorrecta");
+    }
     expect(TokenType::PARENTESIS_DER);
     expect(TokenType::PUNTO_Y_COMA);
   }
@@ -165,7 +167,14 @@ void Parser::parseBoolOperation() {
   /*
   Gramatica: <IDENT> <OPERADOR_COMPARACION> (<IDENT> | <NUM> | VERDADERO | FALSO)
   */
-  expect(TokenType::IDENT);
+  //expect(TokenType::IDENT);
+  if(match(TokenType::LEER)){
+    expect(TokenType::PARENTESIS_IZQ);
+    expect(TokenType::IDENT);
+    expect(TokenType::PARENTESIS_DER);
+  } else {
+    expect(TokenType::IDENT);
+  }
 
   if (!match(TokenType::IGUAL_IGUAL) && !match(TokenType::MENOR_QUE) && !match(TokenType::MAYOR_QUE)) {
     throw std::runtime_error("Error de sintaxis: Se esperaba operador de comparación (==, <, >)");

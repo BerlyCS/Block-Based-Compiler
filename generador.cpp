@@ -55,11 +55,11 @@ void Generador::traduceConfigFun(){
       it += 3;
     } else if (it->tipo == TokenType::BOCINA){ 
       it += 2;
-      file << "pinMode(" << it->valor << ", INPUT_PULLUP);\n";
+      file << "pinMode(" << it->valor << ", OUTPUT);\n";
       it += 3;
     } else {
       it += 2;
-      file << "pinMode(" << it->valor << ", INPUT);\n";
+      file << "pinMode(" << it->valor << ", INPUT_PULLUP);\n";
       it += 3;
     }
   }
@@ -163,9 +163,9 @@ void Generador::traduceWhile(){
   it ++;
   string value;
   if(it->tipo == TokenType::VERDADERO){
-    value = "TRUE";
+    value = "true";
   } else if (it->tipo == TokenType::FALSO){
-    value = "FALSE";
+    value = "false";
   } else {
     value = it->valor;
   }  
@@ -184,7 +184,14 @@ void Generador::traduceIf(){
   escribirSangria();
 
   it += 2;
-  string nomVar = it->valor;
+  string nomVar;
+  if(it->tipo == TokenType::LEER){
+    it += 2;
+    nomVar = "digitalRead(" + it->valor + ")";
+    it++;
+  } else {
+    nomVar = it->valor;
+  }
 
   it ++;
   string op = it->valor;
@@ -192,9 +199,9 @@ void Generador::traduceIf(){
   it ++;
   string value;
   if(it->tipo == TokenType::VERDADERO){
-    value = "TRUE";
+    value = "true";
   } else if (it->tipo == TokenType::FALSO){
-    value = "FALSE";
+    value = "false";
   } else {
     value = it->valor;
   }  
@@ -209,6 +216,7 @@ void Generador::traduceIf(){
   file << "}\n";
 
   it++;
+  std::cout<<it->valor<<std::endl;
   if(it->tipo == TokenType::SINO){
     escribirSangria();
     file << "else {\n";
@@ -219,6 +227,8 @@ void Generador::traduceIf(){
 
     escribirSangria();
     file << "}\n";
+  } else {
+    it--;
   }
 }
 
@@ -236,9 +246,9 @@ void Generador::traduceDefVar(string tipe){
   it++;
   string value;
   if(it->tipo == TokenType::VERDADERO){
-    value = "TRUE";
+    value = "true";
   } else if (it->tipo == TokenType::FALSO){
-    value = "FALSE";
+    value = "false";
   } else if (it->tipo == TokenType::LEER) {
     it += 2;
     value = "digitalRead(" + it->valor + ")";
@@ -257,9 +267,9 @@ void Generador::traduceInitVar(){
   it +=2;
   string value;
   if(it->tipo == TokenType::VERDADERO){
-    value = "TRUE";
+    value = "true";
   } else if (it->tipo == TokenType::FALSO){
-    value = "FALSE";
+    value = "false";
   } else if (it->tipo == TokenType::LEER) {
     it += 2;
     value = "digitalRead(" + it->valor + ")";
@@ -275,18 +285,20 @@ void Generador::tradiceDigitalWrite(string value){
   escribirSangria();
   it += 2;
   std::string varName = it->valor;
-  file << "digitalWrite(" << varName << ", " << value << ");\n";
-  if(bocinas.find(varName) != bocinas.end()){
-    escribirSangria();
-    file << "noTone(" << varName << ");\n";
-  }
+
   it++;
   if(it->tipo == TokenType::COMA){
     it++;
     bocinas.insert(varName);
-    escribirSangria();
     file << "tone(" << varName << ", " << it->valor << ");\n";
-    it++;
+    it+= 2;
+    return;
   }
-  it++;
+
+  if(bocinas.find(varName) != bocinas.end() && value == "LOW"){
+    file << "noTone(" << varName << ");\n";
+    return;
+  }
+  file << "digitalWrite(" << varName << ", " << value << ");\n";
+  it += 1;
 }

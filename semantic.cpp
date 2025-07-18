@@ -35,7 +35,11 @@ void SemanticAnalyzer::verificar(std::vector<Token> &tokens){
       std::string value = it->valor;
       simbols.declarar(value, TipoDato::ENTERO);
       it += 2;
-      simbols.asignar(value, getTipe(it->tipo));
+      if(it->tipo == TokenType::IDENT || it->tipo == TokenType::ENTERO){
+        simbols.asignar(value, TipoDato::ENTERO);
+      } else {
+        simbols.asignar(value, getTipe(it->tipo));
+      }
       break;
     }
     case TokenType::FUNCION:
@@ -125,6 +129,10 @@ void SemanticAnalyzer::verificar(std::vector<Token> &tokens){
       it++;
       simbols.declarar(it->valor, TipoDato::ENTERO);
       simbols.asignar(it->valor, TipoDato::ENTERO);
+      break;
+
+    case TokenType::SI:
+      it += 6;
       break;
 
     case TokenType::IDENT:{

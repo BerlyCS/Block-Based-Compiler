@@ -1,0 +1,136 @@
+# Simulador del Proyecto:
+# https://wokwi.com/projects/436054265741360129
+
+# Botones
+definir_pin(Bo1, 2);
+definir_pin(Bo2, 3);
+definir_pin(Bo3, 4);
+definir_pin(Bo4, 5);
+definir_pin(Bo5, 6);
+definir_pin(Bo6, 7);
+definir_pin(Bo7, 8);
+definir_pin(Bo8, 9);
+
+# Leds
+definir_pin(L1, 10);
+definir_pin(L2, 11);
+definir_pin(L3, 12);
+definir_pin(L4, 13);
+definir_pin(L5, A0);
+definir_pin(L6, A1);
+definir_pin(L7, A2);
+definir_pin(L8, A3);
+
+# Buzzer
+definir_pin(buzzer, A4);
+
+funcion configuracion()
+  # Botones
+  entrada(Bo1);
+  entrada(Bo2);
+  entrada(Bo3);
+  entrada(Bo4);
+  entrada(Bo5);
+  entrada(Bo6);
+  entrada(Bo7);
+  entrada(Bo8);
+
+  # Leds
+  salida(L1);
+  salida(L2);
+  salida(L3);
+  salida(L4);
+  salida(L5);
+  salida(L6);
+  salida(L7);
+  salida(L8);
+
+  bocina(buzzer);
+fin
+
+funcion principal()
+  bool sonido = FALSO;
+  # DO
+  si(leer(Bo1) == 0)
+    sonido = VERDADERO;
+    prender(L1);
+    prender(buzzer, 262);
+  hecho
+  sino
+    apagar(L1);
+  hecho
+
+  # RE
+  si(leer(Bo2) == 0)
+    sonido = VERDADERO;
+    prender(L2);
+    prender(buzzer, 294);
+  hecho
+  sino
+    apagar(L2);
+  hecho
+
+  # MI
+  si(leer(Bo3) == 0)
+    sonido = VERDADERO;
+    prender(L3);
+    prender(buzzer, 330);
+  hecho
+  sino
+    apagar(L3);
+  hecho
+
+  # FA
+  si(leer(Bo4) == 0)
+    sonido = VERDADERO;
+    prender(L4);
+    prender(buzzer, 349);
+  hecho
+  sino
+    apagar(L4);
+  hecho
+
+  # SOL
+  si(leer(Bo5) == 0)
+    sonido = VERDADERO;
+    prender(L5);
+    prender(buzzer, 392);
+  hecho
+  sino
+    apagar(L5);
+  hecho
+
+  # LA
+  si(leer(Bo6) == 0)
+    sonido = VERDADERO;
+    prender(L6);
+    prender(buzzer, 440);
+  hecho
+  sino
+    apagar(L6);
+  hecho
+
+  # SI
+  si(leer(Bo7) == 0)
+    sonido = VERDADERO;
+    prender(L7);
+    prender(buzzer, 494);
+  hecho
+  sino
+    apagar(L7);
+  hecho
+
+  # DO
+  si(leer(Bo8) == 0)
+    sonido = VERDADERO;
+    prender(L8);
+    prender(buzzer, 523);
+  hecho
+  sino
+    apagar(L8);
+  hecho
+
+  si(sonido == FALSO)
+    apagar(buzzer);
+  hecho
+fin
