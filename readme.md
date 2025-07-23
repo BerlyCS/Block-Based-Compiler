@@ -7,6 +7,18 @@
 - Modulos como leds, botones y motores
 - Salida digital (LOW, HIGH)
 
+## Ejecucion
+
+Con la herramienta 'make'
+
+'''
+make
+'''
+
+'''
+./compilador <fuente.ar>
+'''
+
 ### Lenguaje
 
 ##### Tokens:
